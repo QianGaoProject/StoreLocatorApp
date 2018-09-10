@@ -1,0 +1,102 @@
+.store-locator-search__fieldset {
+    display: initial;
+    position: relative;
+}
+.store-locator-search__label {
+    font: normal 700 .875rem/1.4285 Lato,"Myriad Pro","Trebuchet MS",Ubuntu,sans-serif;
+    letter-spacing: .025em;
+    text-transform: uppercase;
+    margin-right: 13px;
+}
+.store-locator-search__search-with-predictions-wrapper {
+    display: inline-block;
+    position: relative;
+}
+.store-locator-search__search {
+    line-height: 37px;
+    -webkit-font-smoothing: antialiased;
+    color: #333;
+    width: 330px;
+    min-width: 255px;
+    height: 37px;
+    border: 1px solid #ccc;
+    padding: 0 40px 0 20px;
+    background-color: #fff;
+    border-radius: 0;
+}
+.store-locator-search__search-with-predictions-wrapper .store-locator-search__predictions-wrapper {
+    font: normal 700 .875rem/1.4285 Lato,"Myriad Pro","Trebuchet MS",Ubuntu,sans-serif;
+    position: absolute;
+    border: 1px solid #ccc;
+    border-width: 0 1px 1px;
+    z-index: 4;
+    width: 100%;
+    border-radius: 2px;
+    display: none;
+}
+.store-locator-search__search-with-predictions-wrapper .store-locator-search__predictions-wrapper .store-locator-search__predicted-item {
+    height: 37px;
+    line-height: 37px;
+    background-color: #fff;
+    cursor: pointer;
+    position: relative;
+}
+.store-locator-search__search-with-predictions-wrapper .store-locator-search__predictions-wrapper .store-locator-search__predicted-item .store-locator-search__predicted-item-link {
+    margin: 0 35px 0 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+.store-locator-search__search-with-predictions-wrapper .store-locator-search__predictions-wrapper .store-locator-search__predicted-item .search-term-part {
+    color: red;
+}
+.store-locator-search--active .store-locator-search__submit {
+    background-image: url(img/sass-sprites_1.png);
+    background-position: -238px -369px;
+    width: 16px;
+    height: 15px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+}
+.store-locator-search__block {
+    padding-bottom: 20px;
+}
+.store-locator-search__submit {
+    border: 0;
+    text-indent: -9999px;
+    padding: 0;
+    display: inline-block;
+    position: relative;
+    right: 32px;
+    margin-top: -9px;
+    background-image: url(img/sass-sprites_1.png);
+    background-position: -272px -369px;
+    width: 16px;
+    height: 15px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+}
+
+input {
+    line-height: normal;
+}
+button, input, optgroup, select, textarea {
+    color: inherit;
+    font: inherit;
+    margin: 0;
+}
+.store-locator__select-block-showing {
+    padding: 15px 0;
+}
+label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.store-locator-search {
+    display: none;
+    float: left;
+    position: relative;
+}
