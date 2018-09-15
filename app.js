@@ -1,173 +1,125 @@
-/*
- * Copyright 2017 Google Inc. All rights reserved.
- *
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
- * ANY KIND, either express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- */
+var map;
 
-// Style credit: https://snazzymaps.com/style/1/pale-dawn
-const mapStyle = [
-    {
-      "featureType": "administrative",
-      "elementType": "all",
-      "stylers": [
-        {
-          "visibility": "on"
-        },
-        {
-          "lightness": 33
-        }
-      ]
-    },
-    {
-      "featureType": "landscape",
-      "elementType": "all",
-      "stylers": [
-        {
-          "color": "#f2e5d4"
-        }
-      ]
-    },
-    {
-      "featureType": "poi.park",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#c5dac6"
-        }
-      ]
-    },
-    {
-      "featureType": "poi.park",
-      "elementType": "labels",
-      "stylers": [
-        {
-          "visibility": "on"
-        },
-        {
-          "lightness": 20
-        }
-      ]
-    },
-    {
-      "featureType": "road",
-      "elementType": "all",
-      "stylers": [
-        {
-          "lightness": 20
-        }
-      ]
-    },
-    {
-      "featureType": "road.highway",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#c5c6c6"
-        }
-      ]
-    },
-    {
-      "featureType": "road.arterial",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#e4d7c6"
-        }
-      ]
-    },
-    {
-      "featureType": "road.local",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#fbfaf7"
-        }
-      ]
-    },
-    {
-      "featureType": "water",
-      "elementType": "all",
-      "stylers": [
-        {
-          "visibility": "on"
-        },
-        {
-          "color": "#acbcc9"
-        }
-      ]
-    }
-  ];
-  
-  // Escapes HTML characters in a template literal string, to prevent XSS.
-  // See https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet#RULE_.231_-_HTML_Escape_Before_Inserting_Untrusted_Data_into_HTML_Element_Content
-  function sanitizeHTML(strings) {
-    const entities = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'};
-    let result = strings[0];
-    for (let i = 1; i < arguments.length; i++) {
-      result += String(arguments[i]).replace(/[&<>'"]/g, (char) => {
-        return entities[char];
-      });
-      result += strings[i];
-    }
-    return result;
+function initialize() {
+  // Create a map centered in Pyrmont, Sydney (Australia).
+  map = new google.maps.Map(document.getElementsByClassName('map')[0], {
+    center: {lat: -33.8666, lng: 151.1958},
+    zoom: 15
+  });
+
+  // Search for Google's office in Australia.
+  var request = {
+    location: map.getCenter(),
+    radius: '500',
+    query: 'Google Sydney'
+  };
+
+  var service = new google.maps.places.PlacesService(map);
+  service.textSearch(request, callback);
+}
+
+// Checks that the PlacesServiceStatus is OK, and adds a marker
+// using the place ID and location from the PlacesService.
+function callback(results, status) {
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    var marker = new google.maps.Marker({
+      map: map,
+      place: {
+        placeId: results[0].place_id,
+        location: results[0].geometry.location
+      }
+    });
   }
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+
+// var marker1, marker2;
+// var poly, geodesicPoly;
+
+// function initMap() {
+//   var map = new google.maps.Map(document.getElementsByClassName('map')[0], {
+//     zoom: 4,
+//     center: {lat: 34, lng: -40.605}
+//   });
+
+//   map.controls[google.maps.ControlPosition.TOP_CENTER].push(
+//       document.getElementById('info'));
+
+//   marker1 = new google.maps.Marker({
+//     map: map,
+//     draggable: true,
+//     position: {lat: 40.714, lng: -74.006}
+//   });
+
+//   marker2 = new google.maps.Marker({
+//     map: map,
+//     draggable: true,
+//     position: {lat: 48.857, lng: 2.352}
+//   });
+
+//   var bounds = new google.maps.LatLngBounds(
+//       marker1.getPosition(), marker2.getPosition());
+//   map.fitBounds(bounds);
+
+//   google.maps.event.addListener(marker1, 'position_changed', update);
+//   google.maps.event.addListener(marker2, 'position_changed', update);
+
+//   poly = new google.maps.Polyline({
+//     strokeColor: '#FF0000',
+//     strokeOpacity: 1.0,
+//     strokeWeight: 3,
+//     map: map,
+//   });
+
+//   geodesicPoly = new google.maps.Polyline({
+//     strokeColor: '#CC0099',
+//     strokeOpacity: 1.0,
+//     strokeWeight: 3,
+//     geodesic: true,
+//     map: map
+//   });
+
+//  // update();
+// }
+
+// function update() {
+//   var path = [marker1.getPosition(), marker2.getPosition()];
+//   poly.setPath(path);
+//   geodesicPoly.setPath(path);
+//   var heading = google.maps.geometry.spherical.computeHeading(path[0], path[1]);
+//   document.getElementById('heading').value = heading;
+//   document.getElementById('origin').value = path[0].toString();
+//   document.getElementById('destination').value = path[1].toString();
+// }
   
-  function initMap() {
+  // function initMap() {
   
-    // Create the map.
-    const map = new google.maps.Map(document.getElementsByClassName('map')[0], {
-      zoom: 7,
-      center: {lat: 52.632469, lng: -1.689423},
-      styles: mapStyle
-    });
+  //   // Create the map.
+  //   const map = new google.maps.Map(document.getElementsByClassName('map')[0], {
+  //     zoom: 8,
+  //     center: {lat: -34.397, lng: 150.644}
+  //   });
   
-    // Load the stores GeoJSON onto the map.
-    map.data.loadGeoJson('stores.json');
+   
+  // var drawingManager = new google.maps.drawing.DrawingManager({
+  //   drawingMode: google.maps.drawing.OverlayType.MARKER,
+  //   drawingControl: true,
+  //   drawingControlOptions: {
+  //     position: google.maps.ControlPosition.TOP_CENTER,
+  //     drawingModes: ['marker', 'circle', 'polygon', 'polyline', 'rectangle']
+  //   },
+  //   markerOptions: {icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'},
+  //   circleOptions: {
+  //     fillColor: '#ffff00',
+  //     fillOpacity: 1,
+  //     strokeWeight: 5,
+  //     clickable: false,
+  //     editable: true,
+  //     zIndex: 1
+  //   }
+  // });
+  // drawingManager.setMap(map);
   
-    // Define the custom marker icons, using the store's "category".
-    map.data.setStyle(feature => {
-      return {
-        icon: {
-          url: `img/icon_${feature.getProperty('category')}.png`,
-          scaledSize: new google.maps.Size(64, 64)
-        }
-      };
-    });
-  
-    const apiKey = 'AIzaSyCOUDtF76wjHmblfGBUxQAeFSJ1aQpteXk';
-    const infoWindow = new google.maps.InfoWindow();
-    infoWindow.setOptions({pixelOffset: new google.maps.Size(0, -30)});
-  
-    // Show the information for a store when its marker is clicked.
-    map.data.addListener('click', event => {
-  
-      const category = event.feature.getProperty('category');
-      const name = event.feature.getProperty('name');
-      const description = event.feature.getProperty('description');
-      const hours = event.feature.getProperty('hours');
-      const phone = event.feature.getProperty('phone');
-      const position = event.feature.getGeometry().get();
-      const content = sanitizeHTML`
-        <img style="float:left; width:200px; margin-top:30px" src="img/logo_${category}.png">
-        <div style="margin-left:220px; margin-bottom:20px;">
-          <h2>${name}</h2><p>${description}</p>
-          <p><b>Open:</b> ${hours}<br/><b>Phone:</b> ${phone}</p>
-          <p><img src="https://maps.googleapis.com/maps/api/streetview?size=350x120&location=${position.lat()},${position.lng()}&key=${apiKey}"></p>
-        </div>
-      `;
-  
-      infoWindow.setContent(content);
-      infoWindow.setPosition(position);
-      infoWindow.open(map);
-    });
-  
-  }
+  // }
